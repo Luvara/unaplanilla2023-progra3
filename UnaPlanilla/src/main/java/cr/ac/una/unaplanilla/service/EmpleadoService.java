@@ -27,16 +27,13 @@ public class EmpleadoService {
             Map<String, Object> parametros = new HashMap<>();
             parametros.put("usuario", usuario);
             parametros.put("clave", clave);
-
             Request request = new Request("EmpleadoController/usuario", "/{usuario}/{clave}", parametros);
             request.get();
-
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
 
             EmpleadoDto empleadoDto = (EmpleadoDto) request.readEntity(EmpleadoDto.class);
-
             return new Respuesta(true, "", "", "Empleado", empleadoDto);
 
         } catch (Exception ex) {
@@ -51,14 +48,13 @@ public class EmpleadoService {
             parametros.put("id", id);
             Request request = new Request("EmpleadoController/empleado", "/{id}/", parametros);
             request.get();
-
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
-            //TODO
+            
             EmpleadoDto empleadoDto = (EmpleadoDto) request.readEntity(EmpleadoDto.class);
             return new Respuesta(true, "", "", "Empleado", empleadoDto);
-            
+
         } catch (Exception ex) {
             Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Error obteniendo el empleado [" + id + "]", ex);
             return new Respuesta(false, "Error obteniendo el empleado.", "getEmpleado " + ex.getMessage());
@@ -67,8 +63,21 @@ public class EmpleadoService {
 
     public Respuesta getEmpleados(String cedula, String nombre, String pApellido) {
         try {
-            // TODO
-            return null;//return new Respuesta(true, "", "", "Empleados", empleados);
+           Map<String, Object> parametros = new HashMap<>();
+            parametros.put("cedula", cedula);
+            parametros.put("nombre", nombre);
+            parametros.put("pApellido", pApellido);
+            
+            Request request = new Request("EmpleadoController/usuario", "/{usuario}/{clave}/{pApellido}", parametros);
+            request.get();
+            
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+
+            EmpleadoDto empleadoDto = (EmpleadoDto) request.readEntity(EmpleadoDto.class);
+            return new Respuesta(true, "", "", "Empleado", empleadoDto);
+            
         } catch (Exception ex) {
             Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Error obteniendo empleados.", ex);
             return new Respuesta(false, "Error obteniendo empleados.", "getEmpleados " + ex.getMessage());
@@ -77,8 +86,15 @@ public class EmpleadoService {
 
     public Respuesta guardarEmpleado(EmpleadoDto empleado) {
         try {
-            // TODO
-            return null;// return new Respuesta(true, "", "", "Empleado", empleadoDto);
+            Request request = new Request("EmpleadoController/empleado");
+            request.post(empleado);
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+
+            EmpleadoDto empleadoDto = (EmpleadoDto) request.readEntity(EmpleadoDto.class);
+            return new Respuesta(true, "", "", "Empleado", empleadoDto);
+
         } catch (Exception ex) {
             Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Error guardando el empleado.", ex);
             return new Respuesta(false, "Error guardando el empleado.", "guardarEmpleado " + ex.getMessage());
@@ -87,8 +103,16 @@ public class EmpleadoService {
 
     public Respuesta eliminarEmpleado(Long id) {
         try {
-            //TODO
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("id", id);
+            Request request = new Request("EmpleadoController/empleado", "/{id}/", parametros);
+            request.delete();
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+
             return new Respuesta(true, "", "");
+
         } catch (Exception ex) {
             Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Error eliminando el empleado.", ex);
             return new Respuesta(false, "Error eliminando el empleado.", "eliminarEmpleado " + ex.getMessage());
