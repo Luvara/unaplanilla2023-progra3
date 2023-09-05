@@ -1,5 +1,6 @@
 cr\ac\una\unaplanilla\util\AppContext.class
 cr\ac\una\unaplanilla\controller\PrincipalViewController.class
+cr\ac\una\unaplanilla\model\Gasto.class
 cr\ac\una\unaplanilla\controller\Controller.class
 cr\ac\una\unaplanilla\util\FlowController.class
 cr\ac\una\unaplanilla\util\Request.class

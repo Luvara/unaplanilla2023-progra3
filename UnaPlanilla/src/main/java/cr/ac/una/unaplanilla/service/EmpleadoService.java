@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import cr.ac.una.unaplanilla.model.EmpleadoDto;
 import cr.ac.una.unaplanilla.util.Request;
 import cr.ac.una.unaplanilla.util.Respuesta;
+import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.GenericType;
 
 /**
@@ -68,15 +69,17 @@ public class EmpleadoService {
             parametros.put("nombre", nombre);
             parametros.put("pApellido", pApellido);
             
-            Request request = new Request("EmpleadoController/usuario", "/{usuario}/{clave}/{pApellido}", parametros);
+            Request request = new Request("EmpleadoController/empleados", "/{usuario}/{clave}/{pApellido}", parametros);
             request.get();
             
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
+            
+            List <EmpleadoDto> empleados;
 
-            EmpleadoDto empleadoDto = (EmpleadoDto) request.readEntity(EmpleadoDto.class);
-            return new Respuesta(true, "", "", "Empleado", empleadoDto);
+            empleados = (List<EmpleadoDto>) request.readEntity(new GenericType<List<EmpleadoDto>>(){});
+            return new Respuesta(true, "", "", "Empleado", empleados);
             
         } catch (Exception ex) {
             Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Error obteniendo empleados.", ex);

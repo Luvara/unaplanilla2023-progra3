@@ -12,6 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <jakartaee>10.0.0</jakartaee>
+        <swaggerui>3.31.1</swaggerui>
     </properties>
     
     <dependencies>
@@ -21,10 +22,21 @@
             <version>${jakartaee}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.glassfish.jersey.containers</groupId>
+            <artifactId>jersey-container-servlet</artifactId>
+            <version>2.27</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-jaxrs2-jakarta</artifactId>
+            <version>2.1.13</version>
+        </dependency>
         <!--TODO-->
     </dependencies>
     
-     <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -69,7 +81,71 @@
                             </artifactItems>
                         </configuration>
                     </execution>
+                    <!--Obtenemos el Swagger-UI -->
+                    <execution>
+                        <id>get-swagger</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.webjars</groupId>
+                                    <artifactId>swagger-ui</artifactId>
+                                    <version>${swaggerui}</version>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${project.build.directory}/docs/swagger-ui</outputDirectory>
+                        </configuration>
+                    </execution>
                 </executions>
+            </plugin>
+            <!--Empaquetemos en nuestro WAR en la sección de docs el Swagger-UI-->
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/${project.build.finalName}/docs</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/docs/swagger-ui/META-INF/resources/webjars/swagger-ui/${swaggerui}</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--Se remplaza el swagger.json que trae el Swagger-UI por defecto con el generado por el proyecto-->
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>replacer</artifactId>
+                <version>1.5.3</version>
+                <executions>
+                    <execution>
+                        <id>replace-swagger-json-location</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <file>${project.build.directory}/${project.build.finalName}/docs/index.html</file>
+                    <replacements>
+                        <replacement>
+                            <token>https://petstore.swagger.io/v2/swagger.json</token>
+                            <value>/${project.name}/ws/openapi.json</value>
+                        </replacement>
+                    </replacements>
+                </configuration>
             </plugin>
         </plugins>
     </build>

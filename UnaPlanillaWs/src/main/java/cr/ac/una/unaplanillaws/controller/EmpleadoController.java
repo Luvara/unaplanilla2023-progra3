@@ -4,6 +4,7 @@ import cr.ac.una.unaplanillaws.model.EmpleadoDto;
 import cr.ac.una.unaplanillaws.service.EmpleadoService;
 import cr.ac.una.unaplanillaws.util.CodigoRespuesta;
 import cr.ac.una.unaplanillaws.util.Respuesta;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -24,6 +25,7 @@ import java.util.logging.Logger;
  * @author Luvara
  */
 @Path("/EmpleadoController")
+@Tag(name = "Empleados", description = "Operaciones sobre empleados")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class EmpleadoController {
