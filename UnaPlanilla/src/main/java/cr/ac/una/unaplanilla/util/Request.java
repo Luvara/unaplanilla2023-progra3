@@ -42,7 +42,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;*/
-
 /**
  *
  * @author ccarranza
@@ -70,7 +69,9 @@ public class Request {
         this.builder = webTarget.request(MediaType.APPLICATION_JSON);
         MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         headers.add("Content-Type", "application/json; charset=UTF-8");
-        // TODO
+        if (AppContext.getInstance().get("Token") != null) {
+            headers.add("Authorization", AppContext.getInstance().get("Token").toString());
+        }
         builder.headers(headers);
     }
 
@@ -84,7 +85,9 @@ public class Request {
         this.builder = webTarget.request(MediaType.APPLICATION_JSON);
         MultivaluedMap<String, Object> headers = new MultivaluedHashMap<>();
         headers.add("Content-Type", "application/json; charset=UTF-8");
-        // TODO
+        if (AppContext.getInstance().get("Token") != null) {
+            headers.add("Authorization", AppContext.getInstance().get("Token").toString());
+        }
         builder.headers(headers);
     }
 
@@ -107,22 +110,21 @@ public class Request {
     }
 
     //TODO
-
     public void post(Object clazz) {
         //TODO
-            Entity<?> entity = Entity.entity(clazz, "application/json; charset=UTF-8");
-            response = builder.post(entity);
+        Entity<?> entity = Entity.entity(clazz, "application/json; charset=UTF-8");
+        response = builder.post(entity);
     }
 
     public void put(Object clazz) {
         // TODO
-            Entity<?> entity = Entity.entity(clazz, "application/json; charset=UTF-8");
-            response = builder.put(entity);
+        Entity<?> entity = Entity.entity(clazz, "application/json; charset=UTF-8");
+        response = builder.put(entity);
     }
 
     public void delete() {
         // TODO
-            response = builder.delete();
+        response = builder.delete();
     }
 
     public int getStatus() {
@@ -130,8 +132,24 @@ public class Request {
     }
 
     public Boolean isError() {
-        // TODO
+        if (getStatus() == Response.Status.UNAUTHORIZED.getStatusCode()) {
+            new Thread() {
+                public void run() {
+                    try {
+                        Thread.sleep(4000);
+                        Platform.runLater(new Runnable() {
+                            public void run() {
+                                FlowController.getInstance().goLogInWindowModal(true);
+                            }
+                        });
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Request.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }.start();
+        }
         return getStatus() != Response.Status.OK.getStatusCode();
+
     }
 
     public String getError() {
@@ -168,7 +186,5 @@ public class Request {
     }
 
     // TODO
-
     // TODO
-
 }

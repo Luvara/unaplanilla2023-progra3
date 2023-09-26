@@ -31,6 +31,7 @@ public class EmpleadoDto {
     public ObjectProperty<LocalDate> fechaIngreso;
     public ObjectProperty<LocalDate> fechaSalida;
     public SimpleBooleanProperty estado;
+    String token;
     private Long version;
     // TODO
     private Boolean modificado;
@@ -158,6 +159,14 @@ public class EmpleadoDto {
 
     public void setEstado(String estado) {
         this.estado.set(estado.equals("A"));
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public Long getVersion() {

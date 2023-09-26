@@ -31,7 +31,7 @@ public class EmpleadoDto {
     private String estado;
     private Long version;
     private Boolean modificado;
-   // TODO
+   private String token;
     private LocalDateTime fecha;
 
     public EmpleadoDto() {
@@ -174,6 +174,15 @@ public class EmpleadoDto {
         this.modificado = modificado;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    
     public LocalDateTime getFecha() {
         return fecha;
     }

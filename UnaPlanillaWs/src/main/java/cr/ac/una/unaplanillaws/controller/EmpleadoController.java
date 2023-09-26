@@ -3,7 +3,9 @@ package cr.ac.una.unaplanillaws.controller;
 import cr.ac.una.unaplanillaws.model.EmpleadoDto;
 import cr.ac.una.unaplanillaws.service.EmpleadoService;
 import cr.ac.una.unaplanillaws.util.CodigoRespuesta;
+import cr.ac.una.unaplanillaws.util.JwTokenHelper;
 import cr.ac.una.unaplanillaws.util.Respuesta;
+import cr.ac.una.unaplanillaws.util.Secure;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ejb.EJB;
 import jakarta.ws.rs.Consumes;
@@ -28,6 +30,7 @@ import java.util.logging.Logger;
 @Tag(name = "Empleados", description = "Operaciones sobre empleados")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Secure
 public class EmpleadoController {
 
     @EJB
@@ -100,12 +103,17 @@ public class EmpleadoController {
 
     @GET
     @Path("/usuario/{usuario}/{clave}")
+    
     public Response validarEmpleado(@PathParam("usuario") String usuario, @PathParam("clave") String clave) {
         try {
             Respuesta res = empleadoService.validarUsuario(usuario, clave);
             if (!res.getEstado()) {
                 return Response.status(res.getCodigoRespuesta().getValue()).entity(res.getMensaje()).build();
             }
+            EmpleadoDto empleadoDto = (EmpleadoDto) res.getResultado("Empleado");
+            empleadoDto.setToken(JwTokenHelper.getInstance().generatePrivateKey(usuario));
+            
+            
             return Response.ok(res.getResultado("Empleado")).build();
 
         } catch (Exception ex) {
