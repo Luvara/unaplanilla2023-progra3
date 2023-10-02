@@ -28,9 +28,9 @@ import java.security.Principal;
 @Priority(Priorities.AUTHENTICATION)
 public class SecurityFilter implements ContainerRequestFilter {
 
-    private static final String AUTORIZATION_SERVICE_PATH = "getUsuario";
+    private static final String AUTHORIZATION_SERVICE_PATH = "getUsuario";
     private final JwTokenHelper jwTokenHelper = JwTokenHelper.getInstance();
-    private static final String AUTHENTICATION_SCHEME = "Bearer";
+    private static final String AUTHENTICATION_SCHEME = "Bearer ";
 
     @Context
     private ResourceInfo resourceinfo;
@@ -38,7 +38,7 @@ public class SecurityFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext request) throws IOException {
         Method method = resourceinfo.getResourceMethod();
-        if (method.getName().equals(AUTORIZATION_SERVICE_PATH)) {
+        if (method.getName().equals(AUTHORIZATION_SERVICE_PATH)) {
             return;
         }
 
@@ -59,7 +59,6 @@ public class SecurityFilter implements ContainerRequestFilter {
         String token = authorizationHeader.substring(AUTHENTICATION_SCHEME.length()).trim();
         
         try {
-
             // Validate the token
             try {
                 Claims claims = jwTokenHelper.claimKey(token);
@@ -119,6 +118,8 @@ public class SecurityFilter implements ContainerRequestFilter {
         // The WWW-Authenticate header is sent along with the response
         requestContext.abortWith(
                 Response.status(Response.Status.UNAUTHORIZED.getStatusCode(), message)
-                        .header(HttpHeaders.WWW_AUTHENTICATE, message).build());
+                        .header(HttpHeaders.WWW_AUTHENTICATE, 
+                                message)
+                        .build());
     }
 }

@@ -77,7 +77,7 @@ public class FlowController {
                 }
             }
         }
-        if (!name.equals("LogIng2")) {
+        if (!name.equals("LogInView")) {
             this.controller = loader.getController();
         }
         return loader;

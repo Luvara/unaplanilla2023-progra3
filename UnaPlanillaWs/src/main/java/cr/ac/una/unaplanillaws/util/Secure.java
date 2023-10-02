@@ -1,4 +1,4 @@
-package cr.ac.una.unaplanillaws.util;
+ package cr.ac.una.unaplanillaws.util;
 
 import jakarta.ws.rs.NameBinding;
 import java.lang.annotation.ElementType;

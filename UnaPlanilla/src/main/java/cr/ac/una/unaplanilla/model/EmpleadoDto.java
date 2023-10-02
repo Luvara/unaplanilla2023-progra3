@@ -31,9 +31,8 @@ public class EmpleadoDto {
     public ObjectProperty<LocalDate> fechaIngreso;
     public ObjectProperty<LocalDate> fechaSalida;
     public SimpleBooleanProperty estado;
-    String token;
     private Long version;
-    // TODO
+    private String token;
     private Boolean modificado;
 
     public EmpleadoDto() {
