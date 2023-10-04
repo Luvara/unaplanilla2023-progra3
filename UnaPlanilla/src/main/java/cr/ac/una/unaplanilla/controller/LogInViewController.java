@@ -57,8 +57,8 @@ public class LogInViewController extends Controller implements Initializable {
 
     @Override
     public void initialize() {
-        txfUsuario.clear();
-        psfClave.clear();
+//        txfUsuario.clear();
+//        psfClave.clear();
     }
 
     @FXML

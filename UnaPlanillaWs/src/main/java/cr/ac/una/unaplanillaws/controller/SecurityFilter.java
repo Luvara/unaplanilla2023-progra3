@@ -28,7 +28,7 @@ import java.security.Principal;
 @Priority(Priorities.AUTHENTICATION)
 public class SecurityFilter implements ContainerRequestFilter {
 
-    private static final String AUTHORIZATION_SERVICE_PATH = "getUsuario";
+    private static final String AUTHORIZATION_SERVICE_PATH = "validarEmpleado";
     private final JwTokenHelper jwTokenHelper = JwTokenHelper.getInstance();
     private static final String AUTHENTICATION_SCHEME = "Bearer ";
 

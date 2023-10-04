@@ -45,8 +45,6 @@ public class EmpleadoController {
                 return Response.status(res.getCodigoRespuesta().getValue()).entity(res.getMensaje()).build();
             }
             
-            
-            
             return Response.ok(res.getResultado("Empleado")).build();
 
         } catch (Exception ex) {

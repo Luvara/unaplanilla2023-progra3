@@ -11,11 +11,14 @@ import cr.ac.una.unaplanillaws.model.TipoPlanilla;
 import cr.ac.una.unaplanillaws.model.TipoPlanillaDto;
 import cr.ac.una.unaplanillaws.util.CodigoRespuesta;
 import cr.ac.una.unaplanillaws.util.Respuesta;
+import jakarta.ejb.LocalBean;
+import jakarta.ejb.Stateless;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.logging.Level;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 
 /**
@@ -23,10 +26,12 @@ import jakarta.persistence.Query;
  * @author Carlos
  */
 // TODO
+@Stateless
+@LocalBean
 public class TipoPlanillaService {
 
     // TODO
-
+    @PersistenceContext(unitName = "UnaPlanillaWsPU")
     // TODO
     private EntityManager em;
 
