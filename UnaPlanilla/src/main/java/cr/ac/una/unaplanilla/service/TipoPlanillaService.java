@@ -10,7 +10,9 @@ import java.util.logging.Logger;
 import cr.ac.una.unaplanilla.model.TipoPlanillaDto;
 import cr.ac.una.unaplanilla.util.Request;
 import cr.ac.una.unaplanilla.util.Respuesta;
+import jakarta.ws.rs.core.GenericType;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -73,4 +75,30 @@ public class TipoPlanillaService {
             return new Respuesta(false, "Ocurrio un error al eliminar el tipo de planilla.", "eliminarTipoPlanilla " + ex.getMessage());
         }
     }
+    
+     public Respuesta getPlanillas (String codigo, String descripcion, String planillaMes) {
+        try {
+           Map<String, Object> parametros = new HashMap<>();
+            parametros.put("codigo", codigo);
+            parametros.put("descripcion", descripcion);
+            parametros.put("planillaMes", planillaMes);
+            
+            Request request = new Request("TiposPlanillaController/planillas", "/{codigo}/{descripcion}/{planillaMes}", parametros);
+            request.get();
+            
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+            
+            List <TipoPlanillaDto> planillas;
+
+            planillas = (List<TipoPlanillaDto>) request.readEntity(new GenericType<List<TipoPlanillaDto>>(){});
+            
+            return new Respuesta(true, "", "", "TipoPlanilla", planillas);
+            
+        } catch (Exception ex) {
+            Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Error obteniendo TipoPlanilla.", ex);
+            return new Respuesta(false, "Error obteniendo TipoPlanilla.", "getPlanillas " + ex.getMessage());
+        }
+    }    
 }

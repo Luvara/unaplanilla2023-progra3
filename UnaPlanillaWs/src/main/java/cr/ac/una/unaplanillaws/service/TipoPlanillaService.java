@@ -20,6 +20,9 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.NonUniqueResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -110,8 +113,40 @@ public class TipoPlanillaService {
             if (ex.getCause() != null && ex.getCause().getCause().getClass() == SQLIntegrityConstraintViolationException.class) {
                 return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "No se puede eliminar el tipo de planilla porque tiene relaciones con otros registros.", "eliminarTipoPlanilla " + ex.getMessage());
             }
-            //LOG.log(Level.SEVERE, "Ocurrio un error al guardar el tipo de planilla.", ex);
             return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error al eliminar el tipo de planilla.", "eliminarTipoPlanilla " + ex.getMessage());
+        }
+    }
+
+    public Respuesta getPlanillas(String codigo, String descripcion, String planillaMes) {
+        try {
+            Query qryPlanilla = em.createNamedQuery("TipoPlanilla.findAll", TipoPlanilla.class);
+
+            List<TipoPlanilla> planillas = qryPlanilla.getResultList();
+
+            List<TipoPlanilla> planillasFiltro = (List<TipoPlanilla>) planillas.stream()
+                    .filter(plan
+                            -> plan.getCodigo().contains(codigo)
+                    || plan.getDescripcion().toLowerCase().contains(descripcion.toLowerCase())
+                    || plan.getPlanillaPorMes().toString().contains(planillaMes)).collect(Collectors.toList());
+
+            List<TipoPlanillaDto> planillaDto = new ArrayList<>();
+
+            if (codigo.equals("%") && descripcion.equals("%") && planillaMes.equals("%")) {
+                for (TipoPlanilla pla : planillas) {
+                    planillaDto.add(new TipoPlanillaDto(pla));
+                }
+            } else {
+                for (TipoPlanilla pla : planillasFiltro) {
+                    planillaDto.add(new TipoPlanillaDto(pla));
+                }
+            }
+            
+            return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "TipoPlanilla", planillaDto);
+
+        } catch (NoResultException ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_NOENCONTRADO, "No existen planillas con estos datos.", "getPlanillas NoResultException");
+        } catch (Exception ex) {
+            return new Respuesta(false, CodigoRespuesta.ERROR_INTERNO, "Ocurrio un error en la consulta.", "getPlanillas " + ex.getMessage());
         }
     }
 }

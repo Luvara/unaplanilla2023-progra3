@@ -39,6 +39,7 @@ import cr.ac.una.unaplanilla.model.EmpleadoDto;
 import cr.ac.una.unaplanilla.model.TipoPlanillaDto;
 import cr.ac.una.unaplanilla.service.EmpleadoService;
 import cr.ac.una.unaplanilla.service.TipoPlanillaService;
+import cr.ac.una.unaplanilla.util.FlowController;
 import cr.ac.una.unaplanilla.util.Formato;
 import cr.ac.una.unaplanilla.util.Mensaje;
 import cr.ac.una.unaplanilla.util.Respuesta;
@@ -324,6 +325,7 @@ public class TiposPlanillaViewController extends Controller implements Initializ
 
     @FXML
     private void onActionBtnBuscar(ActionEvent event) {
+        FlowController.getInstance().goViewInWindowModal("BuscarPlanillaView", null, Boolean.FALSE);
     }
 
     @FXML
@@ -369,6 +371,11 @@ public class TiposPlanillaViewController extends Controller implements Initializ
             Logger.getLogger(EmpleadosViewController.class.getName()).log(Level.SEVERE, "Error guardando el tipo de planilla.", ex);
             new Mensaje().showModal(Alert.AlertType.ERROR, "Guardar Tipo Planilla", getStage(), "Ocurrio un error guardando el tipo de planilla.");
         }
+    }
+    
+    public void bindBuscar() {
+        BuscarPlanillaViewController buscadorPlanilla = (BuscarPlanillaViewController) FlowController.getInstance().getController("BuscarPlanillaView");
+        cargarTipoPlanilla(((TipoPlanillaDto) buscadorPlanilla.getSeleccionado()).getId());
     }
     
     private class ButtonCell extends TableCell<EmpleadoDto, Boolean> {

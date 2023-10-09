@@ -81,6 +81,7 @@ public class EmpleadoService {
             qryEmpleado.setParameter("nombre", nombre);
             qryEmpleado.setParameter("pApellido", pApellido);
             List<Empleado> empleados = qryEmpleado.getResultList();
+            
             List<EmpleadoDto> empleadosDto = new ArrayList<>();
             for (Empleado empleado : empleados) {
                 empleadosDto.add(new EmpleadoDto(empleado));

@@ -19,8 +19,10 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -84,6 +86,26 @@ public class TiposPlanillaController {
         } catch (Exception ex) {
             Logger.getLogger(EmpleadoController.class.getName()).log(Level.SEVERE, null, ex);
             return Response.status(CodigoRespuesta.ERROR_INTERNO.getValue()).entity("Error eliminando la planilla").build();
+        }
+    }
+    
+
+    @GET
+    @Path("/planillas/{codigo}/{descripcion}/{planillaMes}")
+    public Response getPlanillas(@PathParam("codigo") String codigo, @PathParam("descripcion") String descripcion, @PathParam("planillaMes") String planillaMes) {
+        try {
+            Respuesta res = planillaService.getPlanillas(codigo, descripcion, planillaMes);
+
+            if (!res.getEstado()) {
+                return Response.status(res.getCodigoRespuesta().getValue()).entity(res.getMensaje()).build();
+            }
+
+            return Response.ok(new GenericEntity<List<TipoPlanillaDto>>((List<TipoPlanillaDto>) res.getResultado("TipoPlanilla")) {
+            }).build();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(EmpleadoController.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(CodigoRespuesta.ERROR_INTERNO.getValue()).entity("Error obteniendo la planilla").build();
         }
     }
     

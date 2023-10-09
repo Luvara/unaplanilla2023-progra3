@@ -1,14 +1,13 @@
 cr\ac\una\unaplanilla\util\AppContext.class
 cr\ac\una\unaplanilla\controller\PrincipalViewController.class
-cr\ac\una\unaplanilla\model\Gasto.class
 cr\ac\una\unaplanilla\controller\Controller.class
-cr\ac\una\unaplanilla\model\Salonero.class
 cr\ac\una\unaplanilla\util\FlowController.class
 cr\ac\una\unaplanilla\util\Request.class
 module-info.class
 cr\ac\una\unaplanilla\util\Mensaje.class
 cr\ac\una\unaplanilla\service\EmpleadoService.class
 cr\ac\una\unaplanilla\util\BindingUtils.class
+cr\ac\una\unaplanilla\controller\BuscarPlanillaViewController.class
 cr\ac\una\unaplanilla\App.class
 cr\ac\una\unaplanilla\controller\LogInViewController.class
 cr\ac\una\unaplanilla\service\EmpleadoService$1.class
@@ -18,6 +17,7 @@ cr\ac\una\unaplanilla\controller\TiposPlanillaViewController$ButtonCell.class
 cr\ac\una\unaplanilla\controller\EmpleadosViewController.class
 cr\ac\una\unaplanilla\model\TipoPlanillaDto.class
 cr\ac\una\unaplanilla\util\Formato.class
+cr\ac\una\unaplanilla\service\TipoPlanillaService$1.class
 cr\ac\una\unaplanilla\util\Respuesta.class
 cr\ac\una\unaplanilla\util\Request$1$1.class
 cr\ac\una\unaplanilla\util\Request$1.class

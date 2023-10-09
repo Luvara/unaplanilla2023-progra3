@@ -85,34 +85,7 @@ public class EmpleadoService {
             Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Error obteniendo empleados.", ex);
             return new Respuesta(false, "Error obteniendo empleados.", "getEmpleados " + ex.getMessage());
         }
-    }
-    
-//    public Respuesta getEmpleados(String cedula,String nombre,String apellido){
-//        
-//            try {
-//            Query qryEmpleado = em.createNamedQuery("Empleado.findByInfoEmpleado", Empleado.class);
-//            qryEmpleado.setParameter("cedula", cedula);
-//            qryEmpleado.setParameter("nombre", nombre);
-//            qryEmpleado.setParameter("primerApellido", apellido);
-//            
-//            List<EmpleadoDto> empleados = new ArrayList<>();
-//            List<Empleado> empleado= qryEmpleado.getResultList();
-//            for(int i=0; i<empleado.size(); i++){
-//                empleados.add(new EmpleadoDto(empleado.get(i)));
-//            }
-//            return new Respuesta(true, "", "", "Empleado", empleados);
-//        } catch (NoResultException ex) {
-//            return new Respuesta(false, "No existe un usuario con las credenciales ingresadas.", "getEmpleados NoResultException");
-//        } catch (NonUniqueResultException ex) {
-//            Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Ocurrio un error al consultar el usuario.", ex);
-//            return new Respuesta(false, "Ocurrio un error al consultar el usuario.", "getUsuario NonUniqueResultException");
-//        } catch (Exception ex) {
-//            Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Error obteniendo informacion del empleado [" + cedula+ " " +nombre+ "" +apellido+ "]", ex);
-//            return new Respuesta(false, "Error obteniendo el usuario.", "getEmpleados " + ex.getMessage());
-//        }
-//        
-//    }
-    
+    }    
 
     public Respuesta guardarEmpleado(EmpleadoDto empleado) {
         try {
