@@ -15,9 +15,11 @@ import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +37,25 @@ public class EmpleadoController {
 
     @EJB
     EmpleadoService empleadoService;
+    
+    @Context
+    SecurityContext securityContext;
+    
+    @GET
+    @Path("/renovar")
+    public Response renovarToken(){
+        try{
+            String usuarioRequest = securityContext.getUserPrincipal().getName();
+            if (usuarioRequest != null && !usuarioRequest.isEmpty()) {
+                return Response.ok(JwTokenHelper.getInstance().generatePrivateKey(usuarioRequest)).build();
+            } else{
+                return Response.status(CodigoRespuesta.ERROR_PERMISOS.getValue()).entity("No se pudo renovar el token.").build();
+            }
+        }catch (Exception ex) {
+            Logger.getLogger(EmpleadoController.class.getName()).log(Level.SEVERE, null, ex);
+            return Response.status(CodigoRespuesta.ERROR_INTERNO.getValue()).entity("Error renovando el token").build();
+        }
+    }
 
     @GET
     @Path("/empleado/{id}")

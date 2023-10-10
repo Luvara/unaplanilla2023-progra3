@@ -123,12 +123,13 @@ public class TipoPlanillaService {
 
             List<TipoPlanilla> planillas = qryPlanilla.getResultList();
 
-            List<TipoPlanilla> planillasFiltro = (List<TipoPlanilla>) planillas.stream()
-                    .filter(plan
-                            -> plan.getCodigo().contains(codigo)
-                    || plan.getDescripcion().toLowerCase().contains(descripcion.toLowerCase())
-                    || plan.getPlanillaPorMes().toString().contains(planillaMes)).collect(Collectors.toList());
-
+            List<TipoPlanilla> planillasFiltro = planillas.stream()
+                    .filter(plan -> (codigo.equals("%") || plan.getCodigo().contains(codigo)))
+                    .filter(plan -> (descripcion.equals("%") || plan.getDescripcion().toLowerCase().contains(descripcion.toLowerCase())))
+                    .filter(plan -> (planillaMes.equals("%") || plan.getPlanillaPorMes().toString().contains(planillaMes)))
+                    .collect(Collectors.toList());
+            
+            
             List<TipoPlanillaDto> planillaDto = new ArrayList<>();
 
             if (codigo.equals("%") && descripcion.equals("%") && planillaMes.equals("%")) {
@@ -140,7 +141,7 @@ public class TipoPlanillaService {
                     planillaDto.add(new TipoPlanillaDto(pla));
                 }
             }
-            
+
             return new Respuesta(true, CodigoRespuesta.CORRECTO, "", "", "TipoPlanilla", planillaDto);
 
         } catch (NoResultException ex) {

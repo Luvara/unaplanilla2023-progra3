@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 import cr.ac.una.unaplanilla.model.EmpleadoDto;
 import cr.ac.una.unaplanilla.util.Request;
 import cr.ac.una.unaplanilla.util.Respuesta;
-import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.GenericType;
 
 /**
@@ -29,7 +28,7 @@ public class EmpleadoService {
             parametros.put("usuario", usuario);
             parametros.put("clave", clave);
             Request request = new Request("EmpleadoController/usuario", "/{usuario}/{clave}", parametros);
-            request.get();
+            request.getToken();
             if (request.isError()) {
                 return new Respuesta(false, request.getError(), "");
             }
@@ -86,6 +85,21 @@ public class EmpleadoService {
             return new Respuesta(false, "Error obteniendo empleados.", "getEmpleados " + ex.getMessage());
         }
     }    
+    
+    public Respuesta renovarToken() {
+        try {
+            Request request = new Request("EmpleadoController/renovar");
+            request.getRenewal();
+            if (request.isError()) {
+                return new Respuesta(false, request.getError(), "");
+            }
+            String token = (String) request.readEntity(String.class);
+            return new Respuesta(true, "", "", "Token", token);
+        } catch (Exception ex) {
+            Logger.getLogger(EmpleadoService.class.getName()).log(Level.SEVERE, "Error obteniendo el token", ex);
+            return new Respuesta(false, "Error renovando el token.", "renovarToken " + ex.getMessage());
+        }
+    }
 
     public Respuesta guardarEmpleado(EmpleadoDto empleado) {
         try {

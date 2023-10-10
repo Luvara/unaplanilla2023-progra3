@@ -43,14 +43,14 @@ public class JwTokenHelper {
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(getExpirationDate(false))
-//                .claim("rnt", AUTHENTICATION_SCHEME + Jwts
-//                        .builder()
-//                        .setSubject(username)
-//                        .setIssuedAt(new Date())
-//                        .setExpiration(getExpirationDate(true))
-//                        .claim("rnw", true)
-//                        .signWith(key)
-//                        .compact())
+                .claim("rnt", AUTHENTICATION_SCHEME + Jwts
+                        .builder()
+                        .setSubject(username)
+                        .setIssuedAt(new Date())
+                        .setExpiration(getExpirationDate(true))
+                        .claim("rnw", true)
+                        .signWith(key)
+                        .compact())
                 .signWith(key)
                 .compact();
     }
