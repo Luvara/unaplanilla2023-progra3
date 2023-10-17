@@ -1,6 +1,8 @@
 package cr.ac.una.unaplanillaws;
 
 import cr.ac.una.unaplanillaws.controller.JsonbContextResolver;
+import cr.ac.una.unaplanillaws.controller.SecurityFilter;
+import cr.ac.una.unaplanillaws.util.ConstraintViolationExceptionMapper;
 import jakarta.ws.rs.ApplicationPath;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,6 +31,8 @@ public class JakartaRestConfiguration extends ResourceConfig {
         Set<String> providerClassNames = new HashSet() {
             {
                 add(JsonbContextResolver.class.getName());
+                add(ConstraintViolationExceptionMapper.class.getName());
+                add(SecurityFilter.class.getName());
             }
         };
 
